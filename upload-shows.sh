@@ -4,6 +4,19 @@
 ################################ TV SHOWS UPLOADS ################################
 ##################################################################################
 
+# Directory where this file exists
+plexidrive_dir=`dirname $0`
+cd "$plexidrive_dir"
+
+# Read in configuration file
+if [ -e ./plexidrive.conf ] ; then
+	source ./plexidrive.conf
+else
+	echo "Configuration file - plexidrive.conf - not found."
+	echo "$(date +%F_%T) Configuration file - plexidrive.conf - not found." >> "$plexidrive_dir/upload-error"
+	exit 1
+fi
+
 # Loop through to see if any files need uploading
 IFS=$'\n';
 for f in $(find "$local_tvshow_path" -regextype posix-egrep -regex ".*\.($file_types)$"); do
