@@ -138,7 +138,7 @@ for f in $(find "$local_tvshow_path" -regextype posix-egrep -regex ".*\.($file_t
 		echo "tv:$desc" >> "$plexidrive_dir/plex-scan"
 	fi
 
-	# Delete local file after sucessful upload, if enabled
+	# Delete local file after successful upload, if enabled
 	if [ "$delete_after_upload" = true ] ; then
 		# Delete the local file
 		rm "$f"
