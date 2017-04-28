@@ -41,14 +41,6 @@ for f in $(find "$local_tvshow_path" -regextype posix-egrep -regex ".*\.($file_t
 	f=${f##*/}
 	echo "File: $f"
 
-	# Add season folder to list of directories for plex to scan
-	desc="$show:$season:"
-	check=`cat $plexidrive_dir/plex-scan | grep $desc`
-	if [ -z "$check" ]
-	then
-		echo "tv:$desc" >> "$plexidrive_dir/plex-scan"
-	fi
-
 	# Upload file to every Google drive account
 	for (( i=0; i<${num_of_gdrives}; i++ ));
 	do
@@ -137,6 +129,14 @@ for f in $(find "$local_tvshow_path" -regextype posix-egrep -regex ".*\.($file_t
 			fi
 		done
 	done
+
+	# Add season folder to list of directories for plex to scan
+	desc="$show:$season:"
+	check=`cat $plexidrive_dir/plex-scan | grep $desc`
+	if [ -z "$check" ]
+	then
+		echo "tv:$desc" >> "$plexidrive_dir/plex-scan"
+	fi
 
 	# Delete local file after sucessful upload, if enabled
 	if [ "$delete_after_upload" = true ] ; then
