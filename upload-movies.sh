@@ -1,30 +1,5 @@
 #!/bin/bash
 
-# Directory where this file exists
-plexidrive_dir=`dirname $0`
-cd "$plexidrive_dir"
-
-# Read in configuration file
-if [ -e ./plexidrive.conf ] ; then
-	source ./plexidrive.conf
-else
-	echo "Configuration file - plexidrive.conf - not found."
-	echo "$(date +%F_%T) Configuration file - plexidrive.conf - not found." >> "$plexidrive_dir/upload-error"
-	exit 1
-fi
-
-# Create blank files if they don't exist yet
-touch ./plex-scan
-touch ./upload-error
-touch ./gdrive-directory
-
-# Check variables
-if [ "$num_of_gdrives" -ne ${#drive_names[@]} ] || [ "$num_of_gdrives" -ne ${#gdrive_config_paths[@]} ] || [ "$num_of_gdrives" -ne ${#gdrive_mount_paths[@]} ] ; then
-	echo "gdrive variables are not set up correctly! Exiting..."
-	echo "$(date +%F_%T) gdrive variables are not set up correctly! Exiting." >> "$plexidrive_dir/upload-error"
-	exit 1
-fi
-
 ###################################################################################
 ################################## MOVIE UPLOADS ##################################
 ###################################################################################
