@@ -36,6 +36,7 @@ for f in $(find "$local_movies_path" -regextype posix-egrep -regex ".*\.($file_t
 
 		while true
 		do
+			mov_root=`cat $plexidrive_dir/gdrive-directory | grep "${drive_names[i]}:MOVIE_ROOT::"`
 			# Create the movie folder within the Movies directory on drive
 			out=`gdrive --config ${gdrive_config_paths[i]} mkdir --parent ${mov_root##*::} "$folder"`
 			mov_folder=`echo $out | head -n1 | awk '{print $2;}'`
