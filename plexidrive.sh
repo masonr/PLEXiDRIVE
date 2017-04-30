@@ -34,12 +34,34 @@ fi
 
 # Upload tv shows, if enabled
 if [ "$enable_show_uploads" = true ] ; then
+	# First check to see if gdrive show root folder exists
+	for (( i=0; i<${num_of_gdrives}; i++ ));
+	do
+		tv_root="" # initialize
+		tv_root=`cat $plexidrive_dir/gdrive-directory | grep "${drive_names[i]}:TV_ROOT::"` # search for show root folder id
+		if [ -z "$tv_root" ]
+		then # gdrive TV root folder does not exists, creating folder on google drive account
+			out=`gdrive --config ${gdrive_config_paths[i]} mkdir "TV Shows"`
+			echo "${drive_names[i]}:TV_ROOT::$out" >> "$plexidrive_dir/gdrive-directory"
+		fi
+	done
 	# Run the show upload script
 	./upload-shows.sh
 fi
 
 # Upload movies, if enabled
 if [ "$enable_movie_uploads" = true ] ; then
+	# First check to see if gdrive movie root folder exists
+	for (( i=0; i<${num_of_gdrives}; i++ ));
+	do
+		mov_root="" # initialize
+		mov_root=`cat $plexidrive_dir/gdrive-directory | grep "${drive_names[i]}:MOVIE_ROOT::"` # search for movie root folder id
+		if [ -z "$mov_root" ]
+		then # gdrive movie root folder does not exists, creating folder on google drive account
+			out=`gdrive --config ${gdrive_config_paths[i]} mkdir "Movies"`
+			echo "${drive_names[i]}:MOVIE_ROOT::$out" >> "$plexidrive_dir/gdrive-directory"
+		fi
+	done
 	# Run the movie upload script
 	./upload-movies.sh
 fi
