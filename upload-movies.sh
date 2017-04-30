@@ -30,8 +30,8 @@ for f in $(find "$local_movies_path" -regextype posix-egrep -regex ".*\.($file_t
 	in_root=false
 	if [ "$folder" = "$f" ]
 	then
-		in_root=true
-		folder=${folder%.*}
+		in_root=true # Denote movie is in the movie root folder
+		folder=${folder%.*} # Make the folder name the name of the movie (minus the file extension)
 	fi
 	echo "File: $f"
 
