@@ -75,6 +75,7 @@ These scripts are use at your own risk, meaning I am not responsible for any iss
 * Movies can be placed in individual folders or in the local Movies root directory
 * In order to avoid a ban on the Google Drive account with large Plex libraries, the automatic media scans within Plex server settings must be switched off
 * It's very important to use the exact notation as described for the *gdrive-directory* entries and the config file parameters or the scripts may not work at all
+* The script must be ran as root user (*sudo ./plexidrive.sh*) if Plex scanning is enabled as the script must change the effective user to *plex*
 
 ## Configuration (plexidrive.conf)
 
