@@ -40,13 +40,21 @@ if [ "$enable_show_uploads" = true ] ; then
 		tv_root="" # initialize
 		tv_root=`cat $plexidrive_dir/gdrive-directory | grep "${drive_names[i]}:TV_ROOT::"` # search for show root folder id
 		if [ -z "$tv_root" ]
-		then # gdrive TV root folder does not exists, creating folder on google drive account
-			out=`gdrive --config ${gdrive_config_paths[i]} mkdir "TV Shows"`
-			echo "${drive_names[i]}:TV_ROOT::$out" >> "$plexidrive_dir/gdrive-directory"
+		then # gdrive TV root folder does not exists
+			echo "TV Shows root directory entry does not exist for ${drive_names[i]}! See step 8 of readme for directions."
+			exit 1
 		fi
 	done
+
 	# Run the show upload script
 	./upload-shows.sh
+
+	# Check if script succeeded
+	if [ $? -ne 0 ]
+	then
+		echo "Upload shows script was unsuccessful, exiting plexidrive script."
+		exit 1
+	fi
 fi
 
 # Upload movies, if enabled
@@ -57,13 +65,21 @@ if [ "$enable_movie_uploads" = true ] ; then
 		mov_root="" # initialize
 		mov_root=`cat $plexidrive_dir/gdrive-directory | grep "${drive_names[i]}:MOVIE_ROOT::"` # search for movie root folder id
 		if [ -z "$mov_root" ]
-		then # gdrive movie root folder does not exists, creating folder on google drive account
-			out=`gdrive --config ${gdrive_config_paths[i]} mkdir "Movies"`
-			echo "${drive_names[i]}:MOVIE_ROOT::$out" >> "$plexidrive_dir/gdrive-directory"
+		then # gdrive movie root folder does not exists
+			echo "Movie root directory entry does not exist for ${drive_names[i]}! See step 8 of readme for directions."
+			exit 1
 		fi
 	done
+
 	# Run the movie upload script
 	./upload-movies.sh
+
+	# Check if script succeeded
+	if [ $? -ne 0 ]
+	then
+		echo "Upload movies script was unsuccessful, exiting plexidrive script."
+		exit 1
+	fi
 fi
 
 # Scan new media folders with Plex CLI Scanner tool, if enabled
