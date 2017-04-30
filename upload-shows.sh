@@ -43,7 +43,7 @@ for f in $(find "$local_tvshow_path" -regextype posix-egrep -regex ".*\.($file_t
 		else # Season folder for this show DOES NOT exist
 			# Check if show folder exists
 			check=`cat $plexidrive_dir/gdrive-directory | grep "${drive_names[i]}:$show::"`
-			if [ -e "$check" ]
+			if [ ! -z "$check" ]
 			then # Show folder exists, create season folder within
 				parent=${check##*::}
 			else # Show folder DOES NOT exist (new show), create show folder

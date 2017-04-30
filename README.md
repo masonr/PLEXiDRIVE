@@ -19,9 +19,9 @@ These scripts are use at your own risk, meaning I am not responsible for any iss
 	> ~$ git clone https://github.com/masonr/PLEXiDRIVE
 	```
 
-2. Allow scripts to be excuted
+2. Edit permissions to allow *plex* user full access
 	```bash
-	> ~$ chmod +x PLEXiDRIVE/*.sh
+	> ~$ sudo chmod -R 777 PLEXiDRIVE
 	```
 
 3. Install [rclone](https://rclone.org/install/) and [configure](https://rclone.org/drive/) each Google Drive account
@@ -58,6 +58,16 @@ These scripts are use at your own risk, meaning I am not responsible for any iss
 		* For a Movie root folder, use the form: name1:MOVIE_ROOT::0B1uT-U02upTWNUFhRkVSUnBjMU0
 		* Where "name1" corresponds to the names given in the *drive_names* parameter
 	* Replicate procedure above for each Drive account
+
+9. Determine the Plex media section numbers for the Movies and TV Show libraries
+	* Libraries must first be set up on the Plex server (map the Movies library to the rclone mounted path; same for TV Shows)
+	```bash
+	> ~/PLEXiDRIVE$ sudo su -c 'export LD_LIBRARY_PATH=/usr/lib/plexmediaserver; /usr/lib/plexmediaserver/Plex\ Media\ Scanner --list' plex
+		1: Movies
+		2: TV Shows
+  	```
+  	*See command and example output above*
+  	* Copy the corresponding library section numbers to the *plexidrive.conf* (plex_movies_section_num & plex_tvshow_section_num)
 
 ## Important Notes
 * TV Shows must be organized of the form: "(root)/Show Name/Season Number/files"

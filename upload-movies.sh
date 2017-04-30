@@ -86,16 +86,18 @@ for f in $(find "$local_movies_path" -regextype posix-egrep -regex ".*\.($file_t
 			fi
 		done
 
-	echo "mov:$folder" >> "$plexidrive_dir/plex-scan"
+		echo "mov:$folder" >> "$plexidrive_dir/plex-scan"
 
-	# Delete local file after successful upload, if enabled
-	if [ "$delete_after_upload" = true ] ; then
-		# Delete the local folder
-		if [ "$in_root" = "true" ]
-		then
-			rm $f # delete file if in local movie directory
-		else
-			rm -rf $path # delete movie folder
-		fi	
+		# Delete local file after successful upload, if enabled
+		if [ "$delete_after_upload" = true ] ; then
+			# Delete the local folder
+			if [ "$in_root" = "true" ]
+			then
+				rm $f # delete file if in local movie directory
+			else
+				rm -rf $path # delete movie folder
+			fi	
+		fi
+
 	done
 done

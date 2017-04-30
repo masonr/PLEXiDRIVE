@@ -6,8 +6,17 @@
 ##################################################################################
 
 # Directory where this file exists
-plexidrive_dir=`dirname $0`
+plexidrive_dir=`dirname $(realpath -s $0)`
 cd "$plexidrive_dir"
+
+# Read in configuration file
+if [ -e ./plexidrive.conf ] ; then
+	source ./plexidrive.conf
+else
+	echo "Configuration file - plexidrive.conf - not found."
+	echo "$(date +%F_%T) Configuration file - plexidrive.conf - not found." >> "$plexidrive_dir/upload-error"
+	exit 1
+fi
 
 # Log
 echo "+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+" >> "$plexidrive_dir/plex-scan.log"
@@ -20,8 +29,8 @@ then
 	# Upload file to every Google drive account
 	for (( i=0; i<${num_of_gdrives}; i++ ));
 	do
-		out=`ls $gdrive_mount_paths`
-		if [ -z $out ]
+		out=`ls ${gdrive_mount_paths[i]}`
+		if [ -z "$out" ]
 		then
 			echo "A gdrive accounts is not mounted."
 			echo "$(date +%F_%T) plex-scan:${drive_names[i]} not mounted" >> "$plexidrive_dir/plex-scan.log"
@@ -43,7 +52,7 @@ then
 			echo "Plex Scanner: Scanning $season of $show."
 			path="$plex_tvshow_path/$show/$season/"
 			export LD_LIBRARY_PATH=/usr/lib/plexmediaserver
-			/usr/lib/plexmediaserver/Plex\ Media\ Scanner --scan --refresh -c 2 -d "$path"
+			/usr/lib/plexmediaserver/Plex\ Media\ Scanner --scan --refresh -c "$plex_tvshow_section_num" -d "$path"
 			echo "Plex Scanner: Done scanning $season of $show."
 		elif [ "mov" = "${current[0]}" ]
 		then
@@ -52,7 +61,7 @@ then
 			path="$plex_movies_path/$folder"
 			echo "Plex Scanner: Scanning the movie - $folder."
 			export LD_LIBRARY_PATH=/usr/lib/plexmediaserver
-			/usr/lib/plexmediaserver/Plex\ Media\ Scanner --scan --refresh -c 3 -d "$path"
+			/usr/lib/plexmediaserver/Plex\ Media\ Scanner --scan --refresh -c "$plex_movies_section_num" -d "$path"
 			echo "Plex Scanner: Done scanning movie - $folder."
 		fi
 
