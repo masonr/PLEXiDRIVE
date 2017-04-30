@@ -25,7 +25,7 @@ for f in $(find "$local_movies_path" -regextype posix-egrep -regex ".*\.($file_t
 	# Set up variables and folder
 	path=${f%/*}
 	cd "$path"
-	folder=`echo $f | cut -d'/' -f5`
+	folder=`echo ${path#$local_movies_path} | cut -d'/' -f1`
 	f=${f##*/}
 	echo "File: $f"
 
