@@ -25,8 +25,14 @@ for f in $(find "$local_movies_path" -regextype posix-egrep -regex ".*\.($file_t
 	# Set up variables and folder
 	path=${f%/*}
 	cd "$path"
-	folder=`echo ${path#$local_movies_path} | cut -d'/' -f1`
 	f=${f##*/}
+	folder=`echo ${path#$local_movies_path} | cut -d'/' -f1`
+	in_root=false
+	if [ "$folder" = "$f" ]
+	then
+		in_root=true
+		folder=${folder%.*}
+	fi
 	echo "File: $f"
 
 	# Upload file to every Google drive account
@@ -85,7 +91,7 @@ for f in $(find "$local_movies_path" -regextype posix-egrep -regex ".*\.($file_t
 	# Delete local file after successful upload, if enabled
 	if [ "$delete_after_upload" = true ] ; then
 		# Delete the local folder
-		if [ "${local_movies_path##*/}" = "$folder" ]
+		if [ "$in_root" = "true" ]
 		then
 			rm $f # delete file if in local movie directory
 		else
