@@ -6,7 +6,7 @@
 ##################################################################################
 
 # Directory where this file exists
-plexidrive_dir=`dirname $0`
+plexidrive_dir=`dirname $(realpath -s $0)`
 cd "$plexidrive_dir"
 
 # Read in configuration file
