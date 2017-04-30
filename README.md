@@ -98,6 +98,8 @@ Simply run the script below after configuring the Plex server and setting up the
 ### Plex Library Directories
 * plex_tvshow_path: the path of the rclone mounted drive and folder where TV Shows will be found
 * plex_movies_path: the path of the rclone mounted drive and folder where Movies will be found
+* plex_movies_section_num: the library section number corresponding to Movies, found in installation step 9
+* plex_tvshow_section_num: the library section number corresponding to TV Shows, found in installation step 9
 
 ### Local Media Directories
 * local_tvshow_path: the path where local TV Show media will be found
@@ -123,6 +125,8 @@ file_types="mkv|avi|mp4|m4v|mpg|wmv|flv"
 ## Plex Library Directories ##
 plex_tvshow_path="/mnt/main/TV Shows" # no ending /
 plex_movies_path="/mnt/main/Movies" # no ending /
+plex_movies_section_num=1
+plex_tvshow_section_num=2
 
 ## Local Media Directories ##
 local_tvshow_path="/home/masonr/tv-shows/" # end with /
@@ -149,6 +153,8 @@ file_types="mkv|avi|mp4|m4v|mpg|wmv|flv"
 ## Plex Library Directories ##
 plex_tvshow_path="/mnt/main/TV Shows" # no ending /
 plex_movies_path="/mnt/backup/Movies" # no ending /
+plex_movies_section_num=1
+plex_tvshow_section_num=2
 
 ## Local Media Directories ##
 local_tvshow_path="/home/masonr/tv-shows/" # end with /
