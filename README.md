@@ -77,6 +77,11 @@ These scripts are use at your own risk, meaning I am not responsible for any iss
 * It's very important to use the exact notation as described for the *gdrive-directory* entries and the config file parameters or the scripts may not work at all
 * The script must be ran as root user (*sudo ./plexidrive.sh*) if Plex scanning is enabled as the script must change the effective user to *plex*
 
+## Usage
+	```bash
+	sudo ./plexidrive.sh
+	```
+
 ## Configuration (plexidrive.conf)
 
 ### GDrive Settings
