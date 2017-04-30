@@ -78,9 +78,10 @@ These scripts are use at your own risk, meaning I am not responsible for any iss
 * The script must be ran as root user (*sudo ./plexidrive.sh*) if Plex scanning is enabled as the script must change the effective user to *plex*
 
 ## Usage
-	```bash
-	sudo ./plexidrive.sh
-	```
+Simply run the script below after configuring the Plex server and setting up the *plexidrive.conf* file
+```bash
+> ~/PLEXiDRIVE$ sudo ./plexidrive.sh
+```
 
 ## Configuration (plexidrive.conf)
 
