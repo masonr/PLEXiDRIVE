@@ -82,9 +82,9 @@ if [ "$enable_movie_uploads" = true ] ; then
 	fi
 fi
 
-# Scan new media folders with Plex CLI Scanner tool, if enabled
-if [ "$plex_scan_after_upload" = true ] ; then
-	# Run the Plex scan script
-	# If scanning enabled, must be ran as root user to execute the plex scanning script as the plex user
-	sudo su -c './plex-scan.sh' plex
-fi
+# # Scan new media folders with Plex CLI Scanner tool, if enabled
+# if [ "$plex_scan_after_upload" = true ] ; then
+# 	# Run the Plex scan script
+# 	# If scanning enabled, must be ran as root user to execute the plex scanning script as the plex user
+# 	sudo su -c './plex-scan.sh' plex
+# fi

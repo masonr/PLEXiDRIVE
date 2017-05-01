@@ -75,13 +75,24 @@ These scripts are use at your own risk, meaning I am not responsible for any iss
 * Movies can be placed in individual folders or in the local Movies root directory
 * In order to avoid a ban on the Google Drive account with large Plex libraries, the automatic media scans within Plex server settings must be switched off
 * It's very important to use the exact notation as described for the *gdrive-directory* entries and the config file parameters or the scripts may not work at all
-* The script must be ran as root user (*sudo ./plexidrive.sh*) if Plex scanning is enabled as the script must change the effective user to *plex*
+* The plex-scan script must be run as root user (*sudo ./plex-scan.sh*) as the script must have the effective user as *plex*
+* This script uses exponential backoff in cases of the "Rate Limit Exceeded" error
 
 ## Usage
+
+### Uploading media
 Simply run the script below after configuring the Plex server and setting up the *plexidrive.conf* file
 ```bash
-> ~/PLEXiDRIVE$ sudo ./plexidrive.sh
+> ~/PLEXiDRIVE$ ./plexidrive.sh
 ```
+
+### Scanning Plex library for new files
+```bash
+> ~/PLEXiDRIVE$ sudo su -c './plex-scan.sh' plex
+```
+
+### Cron jobs
+In order to automate the uploading of media and Plex scans, cron jobs can be used. Add a cron job to the root crontab for the Plex scan, and to the local user's account for the media uploads.
 
 ## Configuration (plexidrive.conf)
 
@@ -108,7 +119,6 @@ Simply run the script below after configuring the Plex server and setting up the
 ### Enable/Disable Componenets
 * enable_show_uploads: enable or disable uploading of TV media
 * enable_movie_uploads: enable or disable uploading of Movie media
-* plex_scan_after_upload: enable or disable the media scan using Plex media scanner CLI
 
 ### **Example Config w/ One Google Drive**
 ```bash
@@ -135,7 +145,6 @@ local_movies_path="/home/masonr/movies/" # end with /
 ## Enable/Disable Components ##
 enable_show_uploads=true # true/false
 enable_movie_uploads=true # true/false
-plex_scan_after_upload=true # true/false
 ```
 
 ### **Example Config w/ Two Google Drives**
@@ -163,5 +172,4 @@ local_movies_path="/home/masonr/movies/" # end with /
 ## Enable/Disable Components ##
 enable_show_uploads=true # true/false
 enable_movie_uploads=true # true/false
-plex_scan_after_upload=true # true/false
 ```
