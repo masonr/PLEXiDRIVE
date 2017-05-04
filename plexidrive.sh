@@ -6,6 +6,14 @@
 ## server.                                          ##
 ######################################################
 
+# Make sure that this the ONLY instance of this script running 
+for pid in $(pidof -x plexidrive.sh); do
+    if [ $pid != $$ ]; then
+        echo "This script is already running, exiting to avoid duplicate uploads."
+        exit 1
+    fi
+done
+
 # Directory where this file exists
 plexidrive_dir=`dirname $(realpath -s $0)`
 cd "$plexidrive_dir"
