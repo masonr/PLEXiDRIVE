@@ -6,13 +6,6 @@
 ## server.                                          ##
 ######################################################
 
-# Before starting, check if script is already running
-precheck=`ps aux | grep plexidrive.sh | wc -l`
-if [ "$precheck" -gt 1 ] ; then
-	echo "This script is already running, exiting to avoid duplicate uploads."
-	exit 1
-fi
-
 # Directory where this file exists
 plexidrive_dir=`dirname $(realpath -s $0)`
 cd "$plexidrive_dir"
