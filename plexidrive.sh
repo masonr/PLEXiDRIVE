@@ -42,18 +42,6 @@ fi
 
 # Upload tv shows, if enabled
 if [ "$enable_show_uploads" = true ] ; then
-	# First check to see if gdrive show root folder exists
-	for (( i=0; i<${num_of_gdrives}; i++ ));
-	do
-		tv_root="" # initialize
-		tv_root=`cat $plexidrive_dir/gdrive-directory | grep "${drive_names[i]}:TV_ROOT::"` # search for show root folder id
-		if [ -z "$tv_root" ]
-		then # gdrive TV root folder does not exists
-			echo "TV Shows root directory entry does not exist for ${drive_names[i]}! See step 8 of readme for directions."
-			exit 1
-		fi
-	done
-
 	# Run the show upload script
 	./upload-shows.sh
 
