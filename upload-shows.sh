@@ -30,93 +30,11 @@ for f in $(find "$local_tvshow_path" -regextype posix-egrep -regex ".*\.($file_t
 	f=${f##*/}
 	echo "File: $f"
 
-	# Upload file to every Google drive account
+	# Upload file to each Google drive account
 	for (( i=0; i<${num_of_gdrives}; i++ ));
 	do
-		wait_time=1
-
-		# Check if season folder exists
-		check=`cat $plexidrive_dir/gdrive-directory | grep "${drive_names[i]}:$show:$season::"`
-		if [ ! -z "$check" ]
-		then # Season folder for this show exists
-			folder=${check##*::}
-		else # Season folder for this show DOES NOT exist
-			# Check if show folder exists
-			check=`cat $plexidrive_dir/gdrive-directory | grep "${drive_names[i]}:$show::"`
-			if [ ! -z "$check" ]
-			then # Show folder exists, create season folder within
-				parent=${check##*::}
-			else # Show folder DOES NOT exist (new show), create show folder
-				while true
-				do
-					tv_root=`cat $plexidrive_dir/gdrive-directory | grep "${drive_names[i]}:TV_ROOT::"`
-					out=`gdrive --config ${gdrive_config_paths[i]} mkdir --parent ${tv_root##*::} "$show"`
-					# Check if directory was created successfully
-					if  [[ $out == *"Error"* ]] && [[ $out == *"rateLimitExceeded"* ]]
-					then
-						wait_time=$((wait_time * 2))
-						echo "Rate Limit Exceeded, waiting $wait_time seconds."
-						echo "$(date +%F_%T) tv:${drive_names[i]}:$f:$out" >> "$plexidrive_dir/upload-error"
-						sleep $wait_time
-					elif [[ $out =~ "Error \d{3}" ]] && [[ $out != *"rateLimitExceeded"* ]]
-					then
-						echo "Unknown Error, exiting script."
-						echo "$(date +%F_%T) tv:${drive_names[i]}:$f:$out" >> "$plexidrive_dir/upload-error"
-						exit 1 # exit script
-					else
-						parent=`echo $out | head -n1 | awk '{print $2;}'`
-						echo "${drive_names[i]}:$show::$parent" >> "$plexidrive_dir/gdrive-directory"
-						break # exit loop
-					fi
-				done
-			fi
-			while true
-			do
-				# Create the season folder within the show folder
-				out=`gdrive --config ${gdrive_config_paths[i]} mkdir --parent "$parent" "$season"`
-				# Check if directory was created successfully
-				if  [[ $out == *"Error"* ]] && [[ $out == *"rateLimitExceeded"* ]]
-				then
-					wait_time=$((wait_time * 2))
-					echo "Rate Limit Exceeded, waiting $wait_time seconds."
-					echo "$(date +%F_%T) tv:${drive_names[i]}:$f:$out" >> "$plexidrive_dir/upload-error"
-					sleep $wait_time
-				elif [[ $out =~ "Error \d{3}" ]] && [[ $out != *"rateLimitExceeded"* ]]
-				then
-					echo "Unknown Error, exiting script."
-					echo "$(date +%F_%T) tv:${drive_names[i]}:$f:$out" >> "$plexidrive_dir/upload-error"
-					exit 1 # exit script
-				else
-					folder=`echo $out | head -n1 | awk '{print $2;}'`
-					echo "${drive_names[i]}:$show:$season::$folder" >> "$plexidrive_dir/gdrive-directory"
-					break # exit loop
-				fi
-			done
-		fi
-
-		# Upload file to the show folder
-		echo "Uploading file to ${drive_names[i]}......"
-		while true
-		do
-			result=`gdrive --config ${gdrive_config_paths[i]} upload --parent "$folder" $f`
-
-			# Check result of upload
-			if [[ $result == *"Error"* ]] && [[ $result == *"rateLimitExceeded"* ]]
-			then
-				wait_time=$((wait_time * 2))
-				echo "Rate Limit Exceeded, waiting $wait_time seconds."
-				echo "$(date +%F_%T) tv:${drive_names[i]}:$f:$result" >> "$plexidrive_dir/upload-error"
-				sleep $wait_time
-			elif [[ $result =~ "Error \d{3}" ]] && [[ $result != *"rateLimitExceeded"* ]]
-			then
-				echo "Unknown Error, exiting script."
-				echo "$(date +%F_%T) tv:${drive_names[i]}:$f:$out" >> "$plexidrive_dir/upload-error"
-				exit 1 # exit script	
-			else
-				echo "success!"
-				break
-			fi
-		done
+		echo "Uploading to ${drive_names[i]}"
+		rclone copy "$f" "${drive_names[i]}":/TV\ Shows/"$show"/"$season"/
 	done
 
 	# Add season folder to list of directories for plex to scan
