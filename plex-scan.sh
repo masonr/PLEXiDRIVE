@@ -26,7 +26,7 @@ echo "$(date +%F_%T) Starting plex scan." >> "$plexidrive_dir/plex-scan.log"
 if [ -s "$plexidrive_dir/plex-scan" ]
 then
 
-	# Upload file to every Google drive account
+	# Check mount paths are sucessfully mounted
 	for (( i=0; i<${num_of_gdrives}; i++ ));
 	do
 		out=`ls ${gdrive_mount_paths[i]}`
