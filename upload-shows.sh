@@ -33,9 +33,25 @@ for f in $(find "$local_tvshow_path" -regextype posix-egrep -regex ".*\.($file_t
 	# Upload file to each Google drive account
 	for (( i=0; i<${num_of_gdrives}; i++ ));
 	do
-		echo "Uploading to ${drive_names[i]}"
-		rclone copy "$f" "${drive_names[i]}":/TV\ Shows/"$show"/"$season"/
+		echo "Starting upload to ${drive_names[i]}..."
+		rclone copy "$f" "${drive_names[i]}":/TV\ Shows/"$show"/"$season"/ &
 	done
+
+	# Wait until all uploads have finished before continuing
+	FAIL=0
+	for job in `jobs -p`
+	do
+		wait $job || let "FAIL+=1"
+	done
+
+	# Check exit code of upload to make sure no errors occurred
+	if [ "$FAIL" != "0" ] ; then
+		echo "Upload failed. ($FAIL)"
+		echo "$(date +%F_%T) Upload of $f failed - $FAIL." >> "$plexidrive_dir/upload-error"
+		exit 1
+	fi
+	
+	echo "Done upload."
 
 	# Add season folder to list of directories for plex to scan
 	desc="$show:$season:"
