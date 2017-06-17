@@ -38,55 +38,20 @@ for f in $(find "$local_movies_path" -regextype posix-egrep -regex ".*\.($file_t
 	# Upload file to every Google drive account
 	for (( i=0; i<${num_of_gdrives}; i++ ));
 	do
-		wait_time=1
-
-		while true
-		do
-			mov_root=`cat $plexidrive_dir/gdrive-directory | grep "${drive_names[i]}:MOVIE_ROOT::"`
-			# Create the movie folder within the Movies directory on drive
-			out=`gdrive --config ${gdrive_config_paths[i]} mkdir --parent ${mov_root##*::} "$folder"`
-			mov_folder=`echo $out | head -n1 | awk '{print $2;}'`
-		
-			if [[ $out == *"Error"* ]] && [[ $out == *"rateLimitExceeded"* ]]
-			then
-				wait_time=$((wait_time * 2))
-				echo "Rate Limit Exceeded, waiting $wait_time seconds."
-				echo "$(date +%F_%T) RateLimitExceeded mov:${drive_names[i]}:$folder:$out" >> "$plexidrive_dir/upload-error"
-				sleep $wait_time
-			elif [[ $out =~ "Error \d{3}" ]] && [[ $out != *"rateLimitExceeded"* ]]
-			then
-				echo "$(date +%F_%T) UnknownError mov:${drive_names[i]}:$folder:$out" >> "$plexidrive_dir/upload-error"
-				exit 0 # exit script
-			else
-				# Upload file to the movie folder
-				echo "Uploading file to ${drive_names[i]}......"
-				while true
-				do
-					result=`gdrive --config ${gdrive_config_paths[i]} upload --parent "$mov_folder" $f`
-					
-					# Check result of upload
-					if [[ $result == *"Error"* ]] && [[ $result == *"rateLimitExceeded"* ]]
-					then
-						wait_time=$((wait_time * 2))
-						echo "Rate Limit Exceeded, waiting $wait_time seconds"
-						echo "$(date +%F_%T) RateLimitExceeded mov:${drive_names[i]}:$folder:$out" >> "$plexidrive_dir/upload-error"
-						sleep $wait_time					
-					elif [[ $out =~ "Error \d{3}" ]] && [[ $out != *"rateLimitExceeded"* ]]
-					then
-						echo "Unknown error! Halting program."
-						gdrive --config ${gdrive_config_paths[i]} delete $mov_folder
-						echo "$(date +%F_%T) UnknownError mov:${drive_names[i]}:$folder:$out" >> "$plexidrive_dir/upload-error"
-						exit 0 # terminate the script
-					else
-						echo "success!"
-						break # exit loop
-					fi
-				done
-				break # exit loop
-			fi
-		done
+		echo "Starting upload to ${drive_names[i]}..."
+		rclone copy "$f" "${drive_names[i]}":/Movies/"$folder"/ &		
 	done
 
+	# Wait until all uploads have finished before continuing
+	FAIL=0
+	for job in `jobs -p`
+	do
+		wait $job || let "FAIL+=1"
+	done
+
+	echo "Done upload."
+
+	# Add movie's folder to list of directories for plex to scan
 	echo "mov:$folder" >> "$plexidrive_dir/plex-scan"
 
 	# Delete local file after successful upload, if enabled
