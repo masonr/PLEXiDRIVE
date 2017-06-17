@@ -8,7 +8,7 @@ The purpose of this project is to use Google Drive as a means of storage for Ple
 These scripts are use at your own risk, meaning I am not responsible for any issues or faults that may arise. I have tested these scripts on my own systems and verfied their functionality; however, due diligence is required by the end user. I am in no way affiliated with Google, Plex Inc., or rclone. I am not responsible if a ban is place on the user's Drive account due to abuse or excessive API calls.
 
 ## Dependencies
-1. [rclone mount](https://rclone.org/commands/rclone_mount/) 
+1. [rclone](https://rclone.org/) 
 2. [Plex Media Server](https://support.plex.tv/hc/en-us/articles/200288586-Installation)
 
 ## Installation
@@ -25,7 +25,7 @@ These scripts are use at your own risk, meaning I am not responsible for any iss
 
 3. Install [rclone](https://rclone.org/install/) and [configure](https://rclone.org/drive/) each Google Drive account
 
-4. Move both rclone into a directory found in the PATH environment variable and edit permissions
+4. Move rclone into a directory found in the PATH environment variable and edit permissions
 	```bash
 	> ~$ sudo mv rclone /usr/local/bin/
 	> ~$ sudo chown root:root /usr/local/bin/rclone
