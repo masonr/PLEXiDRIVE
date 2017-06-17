@@ -31,7 +31,6 @@ fi
 touch plex-scan
 touch plex-scan.log
 touch upload-error
-touch gdrive-directory
 
 # Check variables
 if [ "$num_of_gdrives" -ne ${#drive_names[@]} ] || [ "$num_of_gdrives" -ne ${#gdrive_config_paths[@]} ] || [ "$num_of_gdrives" -ne ${#gdrive_mount_paths[@]} ] ; then
