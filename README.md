@@ -9,8 +9,7 @@ These scripts are use at your own risk, meaning I am not responsible for any iss
 
 ## Dependencies
 1. [rclone mount](https://rclone.org/commands/rclone_mount/) 
-2. [gdrive CLI client](https://github.com/prasmussen/gdrive#downloads)
-3. [Plex Media Server](https://support.plex.tv/hc/en-us/articles/200288586-Installation)
+2. [Plex Media Server](https://support.plex.tv/hc/en-us/articles/200288586-Installation)
 
 ## Installation
 
@@ -26,14 +25,11 @@ These scripts are use at your own risk, meaning I am not responsible for any iss
 
 3. Install [rclone](https://rclone.org/install/) and [configure](https://rclone.org/drive/) each Google Drive account
 
-4. Download [gdrive CLI client](https://github.com/prasmussen/gdrive#downloads)
-
-5. Move both rclone and gdrive binaries into a directory found in the PATH environment variable
+4. Move both rclone into a directory found in the PATH environment variable and edit permissions
 	```bash
-	> ~$ sudo mv gdrive /usr/local/bin/
 	> ~$ sudo mv rclone /usr/local/bin/
-	> ~$ sudo chown root:root /usr/local/bin/gdrive /usr/local/bin/rclone
-	> ~$ sudo chmod 755 /usr/local/bin/gdrive /usr/local/bin/rclone
+	> ~$ sudo chown root:root /usr/local/bin/rclone
+	> ~$ sudo chmod 755 /usr/local/bin/rclone
 	```
 
 6. Mount Google Drive(s) using [rclone mount](https://rclone.org/commands/rclone_mount/) with options
@@ -43,23 +39,7 @@ These scripts are use at your own risk, meaning I am not responsible for any iss
 	```
 	*Edit path as needed and use rclone remote names configured in Step 3*
 
-7. Link Google Drive account(s) to the gdrive CLI client
-	```bash
-	> ~$ gdrive --config ~/.gdrive-main about
-	```
-
-8. Create media folders within Google Drive accounts and copy folder ID to config file
-	* Log in to the Google Drive account
-	* Create a new folder with a unique name (i.e. TV Shows, if no other folder is named TV Shows)
-	* Enter the new folder
-	* Copy the ID found in the URL after "/folders/" (i.e. 0B1uT-U02upTWNUFhRkVSUnBjMU0)
-	* Place a new entry into the *gdrive-directory* file
-		* For a TV Show root folder, use the form: name1:TV_ROOT::0B1uT-U02upTWNUFhRkVSUnBjMU0
-		* For a Movie root folder, use the form: name1:MOVIE_ROOT::0B1uT-U02upTWNUFhRkVSUnBjMU0
-		* Where "name1" corresponds to the names given in the *drive_names* parameter
-	* Replicate procedure above for each Drive account
-
-9. Determine the Plex media section numbers for the Movies and TV Show libraries
+7. Determine the Plex media section numbers for the Movies and TV Show libraries
 	* Libraries must first be set up on the Plex server (map the Movies library to the rclone mounted path; same for TV Shows)
 	```bash
 	> ~/PLEXiDRIVE$ sudo su -c 'export LD_LIBRARY_PATH=/usr/lib/plexmediaserver; /usr/lib/plexmediaserver/Plex\ Media\ Scanner --list' plex
@@ -70,13 +50,14 @@ These scripts are use at your own risk, meaning I am not responsible for any iss
   	* Copy the corresponding library section numbers to the *plexidrive.conf* (plex_movies_section_num & plex_tvshow_section_num)
 
 ## Important Notes
-* TV Shows must be organized of the form: "(root)/Show Name/Season Number/files"
+* Movies must be placed in the root of the Drive account in a folder called "Movies"
+* TV Shows must be placed in the root of the Drive account in a folder called "TV Shows"
+* TV Shows must be organized of the form: "(root)/Show Name/Season Number/files" (use an automation tool, such as SickRage or Sonarr for ease)
 * The script will not delete empty TV Show folders after successful uploading
 * Movies can be placed in individual folders or in the local Movies root directory
 * In order to avoid a ban on the Google Drive account with large Plex libraries, the automatic media scans within Plex server settings must be switched off
-* It's very important to use the exact notation as described for the *gdrive-directory* entries and the config file parameters or the scripts may not work at all
+* It's very important to use the exact notation as described for the config file parameters or the scripts may not work at all
 * The plex-scan script must be run as root user (*sudo ./plex-scan.sh*) as the script must have the effective user as *plex*
-* This script uses exponential backoff in cases of the "Rate Limit Exceeded" error
 
 ## Usage
 
@@ -99,7 +80,6 @@ In order to automate the uploading of media and Plex scans, cron jobs can be use
 ### GDrive Settings
 * num_of_gdrives: the number of Google Drive accounts to upload media files to
 * drive_names: the name(s) of the Google Drive accounts
-* gdrive_config_paths: the config path(s) where the gdrive CLI client tokens are stored
 * gdrive_mount_paths: where the rclone mount path(s) exist
 
 ### Options
@@ -125,7 +105,6 @@ In order to automate the uploading of media and Plex scans, cron jobs can be use
 ## GDrive Settings ##
 num_of_gdrives=1
 drive_names=('gdrive-main')
-gdrive_config_paths=('/home/masonr/.gdrive-main')
 gdrive_mount_paths=('/mnt/main')
 
 ## Options ##
@@ -152,7 +131,6 @@ enable_movie_uploads=true # true/false
 ## GDrive Settings ##
 num_of_gdrives=2
 drive_names=('gdrive-main' 'gdrive-backup')
-gdrive_config_paths=('/home/masonr/.gdrive-main' '/home/masonr/.gdrive-backup')
 gdrive_mount_paths=('/mnt/main' '/mnt/backup')
 
 ## Options ##
