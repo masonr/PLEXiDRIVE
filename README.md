@@ -1,8 +1,8 @@
 # PLEXiDRIVE
-Scripts to facilitate the use of Google Drive as storage for Plex media
+Scripts to facilitate the use of Cloud Drives as storage for Plex media
 
 ## Purpose
-The purpose of this project is to use Google Drive as a means of storage for Plex.  This project specifically targets using Google Drive unlimited accounts.  Traditionally, using a Drive account with Plex runs into issues with exceeding Google's API call quota. This occurs during Plex scans of large media collections.  To combat this, this project automates the uploading of media to a Drive account and automatically scans the individual directories where new media was placed. This means that only a small subset of the media library will be scanned as opposed to scanning the entire collection (requires automatic Plex scans to be switched off). The scripts also has the ability to upload media to multiple Google accounts for redundancy in a RAID 1-like manner. This can be useful if the Drive accounts have the potential to be banned or revoked (i.e. purchased on eBay, etc.).
+The purpose of this project is to use Cloud Drives as a means of storage for Plex. These scripts can support any cloud drive services that are supported by [rclone](https://rclone.org/). The main use case of this project specifically targets using Google Drive unlimited accounts.  Traditionally, using a Drive account with Plex runs into issues with exceeding Google's API call quota. This occurs during Plex scans of large media collections.  To combat this, this project automates the uploading of media to a Drive account and automatically scans the individual directories where new media was placed. This means that only a small subset of the media library will be scanned as opposed to scanning the entire collection (requires automatic Plex scans to be switched off). The scripts also has the ability to upload media to multiple Google accounts for redundancy in a RAID 1-like manner. This can be useful if the Drive accounts have the potential to be banned or revoked (i.e. purchased on eBay, etc.).
 
 ## Disclaimer
 These scripts are use at your own risk, meaning I am not responsible for any issues or faults that may arise. I have tested these scripts on my own systems and verfied their functionality; however, due diligence is required by the end user. I am in no way affiliated with Google, Plex Inc., or rclone. I am not responsible if a ban is place on the user's Drive account due to abuse or excessive API calls.
@@ -10,6 +10,7 @@ These scripts are use at your own risk, meaning I am not responsible for any iss
 ## Dependencies
 1. [rclone](https://rclone.org/) 
 2. [Plex Media Server](https://support.plex.tv/hc/en-us/articles/200288586-Installation)
+3. [plexdrive](https://github.com/dweidenfeld/plexdrive) *(optional)*
 
 ## Installation
 
@@ -38,6 +39,10 @@ These scripts are use at your own risk, meaning I am not responsible for any iss
 	> ~$ sudo rclone mount --allow-non-empty --allow-other gdrive-main:/ /mnt/gdrive-main &
 	```
 	*Edit path as needed and use rclone remote names configured in Step 3*
+	
+	Alternatively, [plexdrive](https://github.com/dweidenfeld/plexdrive) should also be able to achieve mounting the remote drive without needing to change anything.
+	
+	Encrypted rclone mounts can also be used, but be sure to point your Plex libraries to the decrypted mounts and use the encrypted rclone mount names in the plexidrive config file.
 
 7. Determine the Plex media section numbers for the Movies and TV Show libraries
 	* Libraries must first be set up on the Plex server (map the Movies library to the rclone mounted path; same for TV Shows)
