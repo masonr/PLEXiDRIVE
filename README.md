@@ -1,5 +1,5 @@
 # PLEXiDRIVE
-Scripts to facilitate the use of Cloud Drives as storage for Plex media
+Scripts to facilitate the use of cloud storage providers (i.e. Google Drive) as storage for Plex media using rclone
 
 ## Purpose
 The purpose of this project is to use Cloud Drives as a means of storage for Plex. These scripts can support any cloud drive services that are supported by [rclone](https://rclone.org/). The main use case of this project specifically targets using Google Drive unlimited accounts.  Traditionally, using a Drive account with Plex runs into issues with exceeding Google's API call quota. This occurs during Plex scans of large media collections.  To combat this, this project automates the uploading of media to a Drive account and automatically scans the individual directories where new media was placed. This means that only a small subset of the media library will be scanned as opposed to scanning the entire collection (requires automatic Plex scans to be switched off). The scripts also has the ability to upload media to multiple Google accounts for redundancy in a RAID 1-like manner. This can be useful if the Drive accounts have the potential to be banned or revoked (i.e. purchased on eBay, etc.).
