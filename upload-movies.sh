@@ -49,6 +49,13 @@ for f in $(find "$local_movies_path" -regextype posix-egrep -regex ".*\.($file_t
 		wait $job || let "FAIL+=1"
 	done
 
+	# Check exit code of upload to make sure no errors occurred
+	if [ "$FAIL" != "0" ] ; then
+		echo "Upload failed. ($FAIL)"
+		echo "$(date +%F_%T) Upload of $f failed - $FAIL." >> "$plexidrive_dir/upload-error"
+		exit 1
+	fi
+
 	echo "Done upload."
 
 	# Add movie's folder to list of directories for plex to scan
