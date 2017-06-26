@@ -54,18 +54,6 @@ fi
 
 # Upload movies, if enabled
 if [ "$enable_movie_uploads" = true ] ; then
-	# First check to see if gdrive movie root folder exists
-	for (( i=0; i<${num_of_gdrives}; i++ ));
-	do
-		mov_root="" # initialize
-		mov_root=`cat $plexidrive_dir/gdrive-directory | grep "${drive_names[i]}:MOVIE_ROOT::"` # search for movie root folder id
-		if [ -z "$mov_root" ]
-		then # gdrive movie root folder does not exists
-			echo "Movie root directory entry does not exist for ${drive_names[i]}! See step 8 of readme for directions."
-			exit 1
-		fi
-	done
-
 	# Run the movie upload script
 	./upload-movies.sh
 
