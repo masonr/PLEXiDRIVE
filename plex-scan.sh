@@ -26,8 +26,8 @@ echo "$(date +%F_%T) Starting plex scan." >> "$plexidrive_dir/plex-scan.log"
 if [ -s "$plexidrive_dir/plex-scan" ]
 then
 
-	# Check mount paths are sucessfully mounted
-	if [ ! -d "$plex_tvshow_path" ] || [ ! -d "$plex_movies_path" ] 
+	# Check if each mount path are sucessfully mounted, if enabled
+	if [[ ! -d "$plex_tvshow_path" && "$enable_show_uploads" = "true" ]] || [[ ! -d "$plex_movies_path" && "$enable_movie_uploads" = "true" ]]
 	then
 		echo "At least one plex path is not mounted."
 		echo "$(date +%F_%T) plex-scan: at least one plex path is not mounted" >> "$plexidrive_dir/plex-scan.log"
