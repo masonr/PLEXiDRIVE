@@ -33,9 +33,9 @@ touch plex-scan.log
 touch upload-error
 
 # Check variables
-if [ "$num_of_gdrives" -ne ${#drive_names[@]} ] || [ "$num_of_gdrives" -ne ${#gdrive_mount_paths[@]} ] ; then
-	echo "gdrive variables are not set up correctly! Exiting..."
-	echo "$(date +%F_%T) gdrive variables are not set up correctly! Exiting." >> "$plexidrive_dir/upload-error"
+if [ "$num_of_gdrives" -ne ${#drive_names[@]} ] ; then
+	echo "Number of gdrives does not match the number of drive names! Exiting..."
+	echo "$(date +%F_%T) Number of gdrives does not match the number of drive names! Exiting." >> "$plexidrive_dir/upload-error"
 	exit 1
 fi
 

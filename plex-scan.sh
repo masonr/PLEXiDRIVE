@@ -27,16 +27,13 @@ if [ -s "$plexidrive_dir/plex-scan" ]
 then
 
 	# Check mount paths are sucessfully mounted
-	for (( i=0; i<${num_of_gdrives}; i++ ));
-	do
-		out=`ls ${gdrive_mount_paths[i]}`
-		if [ -z "$out" ]
-		then
-			echo "A gdrive accounts is not mounted."
-			echo "$(date +%F_%T) plex-scan:${drive_names[i]} not mounted" >> "$plexidrive_dir/plex-scan.log"
-			exit 1 # exit the script
-		fi
-	done
+	if [ ! -d "$plex_tvshow_path" ] || [ ! -d "$plex_movies_path" ] 
+	then
+		echo "At least one plex path is not mounted."
+		echo "$(date +%F_%T) plex-scan: at least one plex path is not mounted" >> "$plexidrive_dir/plex-scan.log"
+		echo "$(date +%F_%T) plex-scan: at least one plex path is not mounted" >> "$plexidrive_dir/upload-error"
+		exit 1 # exit the script
+	fi
 
 	unset n
 	while read -r line; do
