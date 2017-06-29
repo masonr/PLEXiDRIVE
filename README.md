@@ -85,7 +85,6 @@ In order to automate the uploading of media and Plex scans, cron jobs can be use
 ### GDrive Settings
 * num_of_gdrives: the number of Google Drive accounts to upload media files to
 * drive_names: the name(s) of the Google Drive accounts
-* gdrive_mount_paths: where the rclone mount path(s) exist
 
 ### Options
 * delete_after_upload: denotes if the local media files should be deleted after successful upload
@@ -110,7 +109,6 @@ In order to automate the uploading of media and Plex scans, cron jobs can be use
 ## GDrive Settings ##
 num_of_gdrives=1
 drive_names=('gdrive-main')
-gdrive_mount_paths=('/mnt/main')
 
 ## Options ##
 delete_after_upload=true # true/false
@@ -136,7 +134,6 @@ enable_movie_uploads=true # true/false
 ## GDrive Settings ##
 num_of_gdrives=2
 drive_names=('gdrive-main' 'gdrive-backup')
-gdrive_mount_paths=('/mnt/main' '/mnt/backup')
 
 ## Options ##
 delete_after_upload=true # true/false
