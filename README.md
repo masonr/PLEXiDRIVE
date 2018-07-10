@@ -80,6 +80,11 @@ Simply run the script below after configuring the Plex server and setting up the
 ### Cron jobs
 In order to automate the uploading of media and Plex scans, cron jobs can be used. Add a cron job to the root crontab for the Plex scan, and to the local user's account for the media uploads.
 
+Example cron job to run PLEXiDRIVE every 4 hours:
+```bash
+0 */4 * * * /bin/bash /path/to/PLEXiDRIVE/plexidrive.sh && su -c '/bin/bash /path/to/PLEXiDRIVE/plex-scan.sh' plex
+```
+
 ## Configuration (plexidrive.conf)
 
 ### GDrive Settings
@@ -89,6 +94,7 @@ In order to automate the uploading of media and Plex scans, cron jobs can be use
 ### Options
 * delete_after_upload: denotes if the local media files should be deleted after successful upload
 * file_types: the file types to scan for when detecting files to upload
+* rclone_config: (optional) full path to rclone config file
 
 ### Plex Library Directories
 * plex_tvshow_path: the path of the rclone mounted drive and folder where TV Shows will be found
@@ -113,6 +119,7 @@ drive_names=('gdrive-main')
 ## Options ##
 delete_after_upload=true # true/false
 file_types="mkv|avi|mp4|m4v|mpg|wmv|flv"
+rclone_config=""
 
 ## Plex Library Directories ##
 plex_tvshow_path="/mnt/main/TV Shows" # no ending /
@@ -137,7 +144,8 @@ drive_names=('gdrive-main' 'gdrive-backup')
 
 ## Options ##
 delete_after_upload=true # true/false
-file_types="mkv|avi|mp4|m4v|mpg|wmv|flv"
+file_types="mkv|avi|mp4|m4v|mpg|wmv|flv|mpeg"
+rclone_config="/home/masonr/.config/rclone/rclone.conf"
 
 ## Plex Library Directories ##
 plex_tvshow_path="/mnt/main/TV Shows" # no ending /

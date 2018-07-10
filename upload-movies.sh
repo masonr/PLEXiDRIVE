@@ -39,7 +39,12 @@ for f in $(find "$local_movies_path" -regextype posix-egrep -regex ".*\.($file_t
 	for (( i=0; i<${num_of_gdrives}; i++ ));
 	do
 		echo "Starting upload to ${drive_names[i]}..."
-		rclone copy "$f" "${drive_names[i]}":/Movies/"$folder"/ &		
+		if [ -z "$rclone_config" ]
+		then
+			rclone copy "$f" "${drive_names[i]}":/Movies/"$folder"/ &
+		else
+			rclone --config "$rclone_config" copy "$f" "${drive_names[i]}":/Movies/"$folder"/ &
+		fi
 	done
 
 	# Wait until all uploads have finished before continuing
