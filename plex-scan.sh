@@ -48,7 +48,7 @@ then
 			season="${current[2]}"
 			echo "Plex Scanner: Scanning $season of $show."
 			path="$plex_tvshow_path/$show/$season/"
-			export LD_LIBRARY_PATH=/usr/lib/plexmediaserver
+			export LD_LIBRARY_PATH=/usr/lib/plexmediaserver:/usr/lib/plexmediaserver/lib
 			/usr/lib/plexmediaserver/Plex\ Media\ Scanner --scan --refresh -c "$plex_tvshow_section_num" -d "$path"
 			echo "Plex Scanner: Done scanning $season of $show."
 		elif [ "mov" = "${current[0]}" ]
@@ -57,7 +57,7 @@ then
 			folder="${current[1]}"
 			path="$plex_movies_path/$folder"
 			echo "Plex Scanner: Scanning the movie - $folder."
-			export LD_LIBRARY_PATH=/usr/lib/plexmediaserver
+			export LD_LIBRARY_PATH=/usr/lib/plexmediaserver:/usr/lib/plexmediaserver/lib
 			/usr/lib/plexmediaserver/Plex\ Media\ Scanner --scan --refresh -c "$plex_movies_section_num" -d "$path"
 			echo "Plex Scanner: Done scanning movie - $folder."
 		fi
