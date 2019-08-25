@@ -20,7 +20,7 @@ fi
 
 # Loop through to see if any files are done downloading
 IFS=$'\n';
-for f in $(find "$local_movies_path" -regextype posix-egrep -regex ".*\.($file_types)$"); do
+for f in $(find "$local_movies_path" -mmin +"$minAge" -regextype posix-egrep -regex ".*\.($file_types)$"); do
 
 	# Set up variables and folder
 	path=${f%/*}
@@ -41,9 +41,9 @@ for f in $(find "$local_movies_path" -regextype posix-egrep -regex ".*\.($file_t
 		echo "Starting upload to ${drive_names[i]}..."
 		if [ -z "$rclone_config" ]
 		then
-			rclone copy "$f" "${drive_names[i]}":/Movies/"$folder"/ &
+			rclone copy "$f" "${drive_names[i]}":/"$drive_movies_path"/"$folder"/ "$custom_variables" &
 		else
-			rclone --config "$rclone_config" copy "$f" "${drive_names[i]}":/Movies/"$folder"/ &
+			rclone --config "$rclone_config" copy "$f" "${drive_names[i]}":/"$drive_movies_path"/"$folder"/ "$custom_variables" &
 		fi
 	done
 
