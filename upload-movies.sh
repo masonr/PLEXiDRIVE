@@ -41,9 +41,9 @@ for f in $(find "$local_movies_path" -mmin +"$min_age" -regextype posix-egrep -r
 		echo "Starting upload to ${drive_names[i]}..."
 		if [ -z "$rclone_config" ]
 		then
-			rclone copy "$f" "${drive_names[i]}":/"$drive_movies_path"/"$folder"/ "$custom_variables" &
+			rclone copy "$f" "${drive_names[i]}":/"$drive_movies_path"/"$folder"/ --bwlimit="$bw_limit" &
 		else
-			rclone --config "$rclone_config" copy "$f" "${drive_names[i]}":/"$drive_movies_path"/"$folder"/ "$custom_variables" &
+			rclone --config "$rclone_config" copy "$f" "${drive_names[i]}":/"$drive_movies_path"/"$folder"/ --bwlimit="$bw_limit" &
 		fi
 	done
 
