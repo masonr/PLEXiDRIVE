@@ -20,7 +20,7 @@ fi
 
 # Loop through to see if any files are done downloading
 IFS=$'\n';
-for f in $(find "$local_movies_path" -mmin +"$minAge" -regextype posix-egrep -regex ".*\.($file_types)$"); do
+for f in $(find "$local_movies_path" -mmin +"$min_age" -regextype posix-egrep -regex ".*\.($file_types)$"); do
 
 	# Set up variables and folder
 	path=${f%/*}

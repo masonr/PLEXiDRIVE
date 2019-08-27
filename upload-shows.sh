@@ -21,7 +21,7 @@ fi
 
 # Loop through to see if any files need uploading
 IFS=$'\n';
-for f in $(find "$local_tvshow_path" -mmin +"$minAge" -regextype posix-egrep -regex ".*\.($file_types)$"); do
+for f in $(find "$local_tvshow_path" -mmin +"$min_age" -regextype posix-egrep -regex ".*\.($file_types)$"); do
 
         # Set up variables and directory
         path=${f%/*}
@@ -37,9 +37,9 @@ for f in $(find "$local_tvshow_path" -mmin +"$minAge" -regextype posix-egrep -re
                 echo "Starting upload to ${drive_names[i]}..."
                 if [ -z "$rclone_config" ]
                 then
-                        rclone copy "$f" "${drive_names[i]}":/"$drive_tvshow_path"/"$show"/"$season"/ "$custom_variables" &
+                        rclone copy "$f" "${drive_names[i]}":/"$drive_tvshow_path"/"$show"/"$season"/ "$bw_limit" &
                 else
-                        rclone --config "$rclone_config" copy "$f" "${drive_names[i]}":/"$drive_tvshow_path"/"$show"/"$season"/ "$custom_variables" &
+                        rclone --config "$rclone_config" copy "$f" "${drive_names[i]}":/"$drive_tvshow_path"/"$show"/"$season"/ "$bw_limit" &
                 fi
         done
 
